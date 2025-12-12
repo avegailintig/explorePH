@@ -1,0 +1,262 @@
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ExplorePH — Destinations</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/png" href="favicon.png">
+</head>
+
+  <!-- Small page-specific styles (keeps existing color variables) -->
+  <style>
+    /* Subtle improvements but do not change colors (except CTA enhancements requested) */
+    .hero {
+      display:block;
+      margin-top: 12px;
+    }
+    .hero-card {
+      display:flex;
+      gap:20px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap:wrap;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      padding: 18px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+    .hero-text {
+      flex:1 1 420px;
+      min-width: 240px;
+    }
+    .hero .kicker {
+      font-weight:600;
+      letter-spacing:1.2px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+    .hero h1 {
+      margin:0 0 12px 0;
+      line-height:1.12;
+      font-size:1.6rem;
+    }
+    .hero .lead {
+      color:var(--muted);
+      margin-bottom:14px;
+    }
+    
+
+    /* Enhanced CTA buttons (both matched to the same color) */
+    .cta {
+      display:inline-block;
+      padding:10px 14px;
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:600;
+      transition:transform 140ms ease, box-shadow 140ms ease, opacity 120ms ease;
+      box-shadow: 0 6px 18px rgba(2,20,40,0.04);
+      color: #fff;
+      border: none;
+      outline: none;
+    }
+    .cta:focus {
+      box-shadow: 0 6px 18px rgba(2,20,40,0.08), 0 0 0 4px rgba(14,165,164,0.12);
+    }
+    .cta:hover { transform: translateY(-3px); }
+
+    /* Matched Primary color for both Destinations and Culture */
+    .cta-primary {
+      background: linear-gradient(180deg, #10b981 0%, #0ea5a4 100%); /* teal gradient */
+      box-shadow: 0 10px 30px rgba(14,165,164,0.12);
+    }
+    .cta-primary:hover {
+      box-shadow: 0 18px 44px rgba(14,165,164,0.18);
+    }
+
+    /* Destination preview cards on home */
+    .home-dest-row {
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .home-dest {
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      background: var(--card-bg, #fff);
+      padding:10px;
+      border-radius:10px;
+      box-shadow: var(--shadow);
+      transition:transform 160ms ease, box-shadow 160ms ease;
+      cursor: pointer;
+      min-width:220px;
+      flex:1 1 calc(33% - 12px);
+    }
+    .home-dest:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 14px 36px rgba(2,20,40,0.08);
+    }
+    .home-dest .dest-thumb { width:140px; height:92px; object-fit:cover; border-radius:8px; flex:0 0 140px; }
+
+    /* Featured tips box */
+    .featured-tips {
+      margin-top:18px;
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+    .tips-card {
+      flex:1 1 320px;
+      padding:14px;
+      border-radius:10px;
+      background:var(--card-bg, #fff);
+      box-shadow: var(--shadow);
+    }
+    .tips-card h4 { margin:0 0 8px 0; }
+    .tips-list { margin:0; padding-left:18px; color:var(--muted); }
+
+    /* Back to top */
+    #backToTop {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      background: var(--card-bg, #fff);
+      border-radius: 999px;
+      padding:10px 12px;
+      box-shadow: var(--shadow);
+      display:none;
+      border:none;
+      cursor:pointer;
+      z-index:1000;
+    }
+    #backToTop.show { display:block; }
+    #backToTop:focus { outline: 2px solid rgba(0,0,0,0.08); }
+
+    /* Small screens tweaks */
+    @media (max-width:760px){
+      .hero h1 { font-size:1.2rem; }
+      .home-dest { flex:1 1 100%; }
+      .hero-card { gap:12px; }
+      .cta { padding:9px 12px; font-size:0.95rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- include external svg sprite for icons (keeps markup smaller) -->
+  <div style="display:none">
+    <object type="image/svg+xml" data="icons.svg" aria-hidden="true"></object>
+  </div>
+
+  <header class="site-nav">
+    <div class="nav-inner container">
+      <a class="brand" href="index.html"> 
+        <img class="logo-img" src="images/logo.png" 
+        srcset="images/logo@2x.png 2x" width="44" height="44" alt="ExplorePH logo"> 
+        <div> <div style="font-size:0.95rem">ExplorePH</div> 
+        <div style="font-size:0.75rem;color:var(--muted)">Discover the Beauty of the Philippines</div> </div> </a>
+
+      <nav>
+        <button id="navToggle" class="nav-toggle" aria-label="Toggle menu">
+          <svg class="icon" width="20" height="20" aria-hidden="true">
+            <use href="icons.svg#icon-menu"></use>
+          </svg>
+        </button>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="destinations.html">Destinations</a>
+          <a href="culture.html">Culture & Tips</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="about.html">About Us</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-card" id="heroCarousel" aria-roledescription="carousel">
+        <div class="hero-text">
+          <div class="kicker">WELCOME</div>
+          <h1 id="heroTitle">Explore the islands, culture, and flavors of the Philippines</h1>
+          <p class="lead" id="heroLead">From Palawan's turquoise lagoons to Siargao's surf and Baguio's cool breeze — find inspiration for your next trip.</p>
+          <div style="display:flex;gap:10px;align-items:center;margin-top:8px">
+            <!-- Both buttons now share the same matched color -->
+            <a class="cta cta-primary" href="destinations.html">Explore Destinations →</a>
+            <a class="cta cta-primary" id="heroLearn" href="culture.html">Culture & Tips →</a>
+          </div>
+        </div>
+
+        <div style="width:340px;position:relative">
+          <img id="heroImage" src="images/hero-palau.jpg" alt="Philippines" style="width:100%;border-radius:12px;box-shadow:var(--shadow)">
+          <div id="heroDots" style="position:absolute;left:12px;bottom:12px;display:flex;gap:6px"></div>
+        </div>
+      </div>
+
+      <!-- Search/filter removed as requested -->
+
+      <div class="home-dest-row" id="homeDestRow" aria-live="polite">
+        <div class="home-dest" data-id="palawan" tabindex="0">
+          <img class="dest-thumb" src="images/palawan.jpg" alt="Palawan">
+          <div class="dest-body">
+            <h3 class="dest-title">Palawan</h3>
+            <p class="dest-desc">Crystal clear waters and hidden lagoons — often called the last frontier.</p>
+          </div>
+        </div>
+
+        <div class="home-dest" data-id="siargao" tabindex="0">
+          <img class="dest-thumb" src="images/siargao.jpg" alt="Siargao">
+          <div class="dest-body">
+            <h3 class="dest-title">Siargao</h3>
+            <p class="dest-desc">Surfing capital with a laid-back island vibe and stunning rock pools.</p>
+          </div>
+        </div>
+
+        <div class="home-dest" data-id="cebu" tabindex="0">
+          <img class="dest-thumb" src="images/cebu.jpg" alt="Cebu">
+          <div class="dest-body">
+            <h3 class="dest-title">Cebu</h3>
+            <p class="dest-desc">History, waterfalls, and diving adventures — a hub for exploration.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="featured-tips">
+        <div class="tips-card">
+          <h4>Quick Travel Tips</h4>
+          <ul class="tips-list">
+            <li>Bring reef-safe sunscreen for beach days.</li>
+            <li>Carry small cash — many island vendors are cash-only.</li>
+            <li>Book island tours ahead during high season (Nov — May).</li>
+          </ul>
+        </div>
+
+        <div class="tips-card">
+          <h4>Plan Smarter</h4>
+          <p style="color:var(--muted)">Need inspiration? Click a featured destination card to open details (if available) or go to the Destinations page for the full listing.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 style="margin-bottom:12px">Why ExplorePH?</h2>
+      <p style="color:var(--muted)">ExplorePH is a student-made travel guide built for curious travelers who want easy-to-follow suggestions, local tips, and beautiful photos to inspire their next trip.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      © 2025 ExplorePH
+    </div>
+  </footer>
+
+  <button id="backToTop" aria-label="Back to top">
+    <svg class="icon" width="14" height="14" aria-hidden="true">
+      <use href="icons.svg#icon-up"></use>
+    </svg>
+  </button>
+
+  <script src="scripts.js"></script>
+</body>
+</html>

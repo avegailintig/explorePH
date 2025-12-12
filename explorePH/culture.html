@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ExplorePH — Culture & Tips</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/png" href="favicon.png">
+</head>
+
+<body>
+  <div style="display:none">
+    <object type="image/svg+xml" data="icons.svg" aria-hidden="true"></object>
+  </div>
+
+  <header class="site-nav">
+    <div class="nav-inner container">
+       <a class="brand" href="index.html"> 
+        <img class="logo-img" src="images/logo.png" 
+        srcset="images/logo.png 2x" width="44" height="44" alt="ExplorePH logo"> 
+        <div> <div style="font-size:0.95rem">ExplorePH</div> 
+        <div style="font-size:0.75rem;color:var(--muted)">Discover the Beauty of the Philippines</div> </div> </a>
+      <nav>
+        <button id="navToggle" class="nav-toggle" aria-label="Toggle menu">
+          <svg class="icon" width="20" height="20" aria-hidden="true">
+            <use href="icons.svg#icon-menu"></use>
+          </svg>
+        </button>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="destinations.html">Destinations</a>
+          <a href="culture.html">Culture & Tips</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="about.html">About Us</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section>
+      <h1>Culture & Travel Tips</h1>
+      <p class="lead">Respectful travel makes better memories. Here are some quick tips and cultural notes.</p>
+
+      <div style="display:grid;gap:14px;margin-top:18px;">
+        <div class="form-card">
+          <h3>Travel Advice</h3>
+          <ul style="color:var(--muted);line-height:1.6;">
+            <li>Bring sunscreen, insect repellent, and a water bottle — hydration matters.</li>
+            <li>Check weather and local transport options in advance.</li>
+            <li>Book accommodations early for peak travel season.</li>
+          </ul>
+        </div>
+
+        <div class="form-card">
+          <h3>Cultural Etiquette</h3>
+          <ul style="color:var(--muted);line-height:1.6;">
+            <li>Use polite language — terms like "po" and "opo" show respect to elders.</li>
+            <li>Ask permission before taking photos of people or private property.</li>
+            <li>Be mindful of local customs — dress modestly in religious sites.</li>
+          </ul>
+        </div>
+
+        <div class="form-card">
+          <h3>Safety & Practical Tips</h3>
+          <ul style="color:var(--muted);line-height:1.6;">
+            <li>Keep copies of IDs and travel documents.</li>
+            <li>Use accredited tour operators for activities like diving and island hopping.</li>
+            <li>Respect nature — don’t leave trash behind and follow guidelines for marine parks.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">© 2025 ExplorePH</div>
+  </footer>
+
+  <script src="scripts.js"></script>
+</body>
+</html>

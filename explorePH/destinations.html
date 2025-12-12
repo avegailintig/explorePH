@@ -1,0 +1,390 @@
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ExplorePH — Destinations</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/png" href="favicon.png">
+</head>
+
+  <!-- Modal styles (adjusted so the main image fills the vertical white-space below thumbnails) -->
+  <style>
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal.open { display: flex; }
+    .modal-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(2px);
+    }
+
+    /* Keep the same max-height but make the panel a column so content can flex */
+    .modal-panel {
+      position: relative;
+      background: var(--card-bg, #fff);
+      color: var(--text-color, #111);
+      border-radius: 12px;
+      box-shadow: var(--shadow, 0 6px 24px rgba(0,0,0,0.12));
+      max-width: 920px;
+      width: calc(100% - 40px);
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden; /* let inner areas scroll instead of expanding the panel */
+      padding: 0; /* we'll handle padding inside modal-grid for better height calculations */
+      z-index: 1001;
+    }
+
+    .modal-close {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      background: transparent;
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: inherit;
+      z-index: 1002;
+    }
+
+    /* Make the grid stretch to the available panel height and allow content column to scroll */
+    .modal-grid {
+      display: flex;
+      gap: 18px;
+      flex-wrap: nowrap; /* keep image + content side-by-side */
+      align-items: stretch; /* crucial to make columns equal height */
+      padding: 20px;
+      box-sizing: border-box;
+      flex: 1 1 auto; /* occupy available height of modal-panel */
+      overflow: hidden;
+    }
+
+    /* Left column: image + thumbs. Use flex column so image can expand */
+    .modal-image-wrap {
+      width: 320px;
+      max-width: 40%;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      align-items:stretch;
+      position: relative;
+      min-width: 200px;
+      box-sizing: border-box;
+      flex: 0 0 40%;
+      min-height: 0; /* allow proper flexing inside container */
+    }
+
+    /* Main image should fill the vertical space in the left column */
+    .modal-image {
+      width: 100%;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: var(--shadow, 0 6px 18px rgba(0,0,0,0.12));
+      display: block;
+      flex: 1 1 auto;   /* critical: let the image expand to fill available height */
+      min-height: 0;    /* prevents flexbox overflow issues */
+      height: auto;     /* allow the combination of flex and object-fit to size image */
+    }
+
+    .modal-thumbs {
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-start;
+      margin-top: 6px;
+      overflow:auto;
+    }
+    .modal-thumbs img {
+      width: 64px;
+      height: 44px;
+      object-fit:cover;
+      border-radius:6px;
+      cursor:pointer;
+      border: 2px solid transparent;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+      flex: 0 0 auto;
+    }
+    .modal-thumbs img.active {
+      border-color: rgba(0,0,0,0.12);
+    }
+
+    /* Right column: textual content; make it scrollable if content is long */
+    .modal-content {
+      flex: 1 1 60%;
+      min-width: 200px;
+      overflow: auto;
+      padding-right: 8px;
+    }
+
+    .modal h2 { margin: 0 0 6px 0; padding: 0; }
+    .modal h3 { margin-bottom: 6px; margin-top: 12px; font-size: 0.95rem; }
+    .modal p { margin: 0 0 8px 0; line-height: 1.45; }
+    .modal ul { margin: 0 0 8px 18px; padding: 0; }
+    .modal .tag {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.06);
+      font-size: 0.85rem;
+    }
+
+    /* Arrow buttons placed over the left column image area */
+    .modal-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.9);
+      border: none;
+      padding: 8px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+      font-size: 1.1rem;
+      color: var(--text-color, #111);
+      z-index: 1002;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-arrow:focus { outline: 2px solid rgba(0,0,0,0.12); }
+    .modal-arrow.prev { left: 8px; }
+    .modal-arrow.next { right: 8px; }
+
+    @media (max-width: 840px) {
+      .modal-image-wrap { flex: 0 0 45%; }
+      .modal-content { flex: 1 1 55%; }
+    }
+
+    @media (max-width: 640px) {
+      .modal-grid { flex-direction: column; gap: 12px; padding: 14px; }
+      .modal-image-wrap { width: 100%; max-width: 100%; flex: 0 0 auto; }
+      .modal-thumbs img { width: 72px; height: 48px; }
+      .modal-arrow.prev { left: 6px; }
+      .modal-arrow.next { right: 6px; }
+      .modal-panel { max-width: calc(100% - 20px); }
+    }
+  </style>
+</head>
+<body>
+  <div style="display:none">
+    <object type="image/svg+xml" data="logo.png" aria-hidden="true"></object>
+  </div>
+
+  <header class="site-nav">
+    <div class="nav-inner container">
+       <a class="brand" href="index.html"> 
+        <img class="logo-img" src="images/logo.png" 
+        srcset="images/logo.png 2x" width="44" height="44" alt="ExplorePH logo"> 
+        <div> <div style="font-size:0.95rem">ExplorePH</div> 
+        <div style="font-size:0.75rem;color:var(--muted)">Discover the Beauty of the Philippines</div> </div> </a>
+      <nav>
+        <button id="navToggle" class="nav-toggle" aria-label="Toggle menu">
+          <svg class="icon" width="20" height="20" aria-hidden="true">
+            <use href="icons.svg#icon-menu"></use>
+          </svg>
+        </button>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="destinations.html">Destinations</a>
+          <a href="culture.html">Culture & Tips</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="about.html">About Us</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section>
+      <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:240px">
+          <h1>Top Philippine Destinations</h1>
+          <p class="lead">Handpicked locations to suit every travel style — beaches, mountains, history, and adventure.</p>
+        </div>
+      </div>
+
+      <div class="grid" style="margin-top:20px">
+        <article class="dest-card" data-id="palawan">
+          <img class="dest-thumb" src="images/palawan.jpg" alt="Palawan">
+          <div class="dest-body">
+            <h3 class="dest-title">Palawan — El Nido & Coron</h3>
+            <p class="dest-desc">Iconic limestone cliffs, secret lagoons, and world-class snorkeling.</p>
+          </div>
+        </article>
+
+        <article class="dest-card" data-id="siargao">
+          <img class="dest-thumb" src="images/siargao.jpg" alt="Siargao">
+          <div class="dest-body">
+            <h3 class="dest-title">Siargao — Surf & Island Life</h3>
+            <p class="dest-desc">Perfect waves for surfers, island hopping, and relaxed seaside eateries.</p>
+          </div>
+        </article>
+
+        <article class="dest-card" data-id="baguio">
+          <img class="dest-thumb" src="images/baguio.jpg" alt="Baguio">
+          <div class="dest-body">
+            <h3 class="dest-title">Baguio — Cool Highlands</h3>
+            <p class="dest-desc">Pine-scented air, parks, and cozy cafés — a cool escape from the lowlands.</p>
+          </div>
+        </article>
+
+        <article class="dest-card" data-id="cebu">
+          <img class="dest-thumb" src="images/cebu.jpg" alt="Cebu">
+          <div class="dest-body">
+            <h3 class="dest-title">Cebu — History & Waterfalls</h3>
+            <p class="dest-desc">A city of contrasts — urban life, historical sites, and natural wonders nearby.</p>
+          </div>
+        </article>
+
+        <!-- Additional destinations (unchanged) -->
+        <article class="dest-card" data-id="bohol">
+          <img class="dest-thumb" src="images/bohol.jpg" alt="Bohol">
+          <div class="dest-body">
+            <h3 class="dest-title">Bohol — Chocolate Hills & Tarsiers</h3>
+            <p class="dest-desc">Rolling limestone hills, gentle river cruises, and unique wildlife encounters.</p>
+          </div>
+        </article>
+
+        <article class="dest-card" data-id="banaue">
+          <img class="dest-thumb" src="images/banaue.jpg" alt="Banaue Rice Terraces">
+          <div class="dest-body">
+            <h3 class="dest-title">Banaue — Rice Terraces</h3>
+            <p class="dest-desc">Millennia-old terraces carved into the mountains — a cultural and scenic wonder.</p>
+          </div>
+        </article>
+
+        <article class="dest-card" data-id="vigan">
+          <img class="dest-thumb" src="images/vigan.jpg" alt="Vigan">
+          <div class="dest-body">
+            <h3 class="dest-title">Vigan — Heritage Streets</h3>
+            <p class="dest-desc">Cobblestone lanes, Spanish-era houses, and timeless charm in Ilocos Sur.</p>
+          </div>
+        </article>
+
+        <article class="dest-card" data-id="siquijor">
+          <img class="dest-thumb" src="images/siquijor.jpg" alt="Siquijor">
+          <div class="dest-body">
+            <h3 class="dest-title">Siquijor — Beaches & Mystique</h3>
+            <p class="dest-desc">Laid-back island vibes, waterfalls, and clear snorkel spots with a mystical reputation.</p>
+          </div>
+        </article>
+
+        <article class="dest-card" data-id="batanes">
+          <img class="dest-thumb" src="images/batanes.jpg" alt="Batanes">
+          <div class="dest-body">
+            <h3 class="dest-title">Batanes — Rugged Beauty</h3>
+            <p class="dest-desc">Wind-swept cliffs, rolling hills, and a distinct Ivatan culture at the northern edge of the Philippines.</p>
+          </div>
+        </article>
+
+        <article class="dest-card" data-id="iloilo">
+          <img class="dest-thumb" src="images/iloilo.jpg" alt="Iloilo & Guimaras">
+          <div class="dest-body">
+            <h3 class="dest-title">Iloilo & Guimaras — Food & Islands</h3>
+            <p class="dest-desc">Rich heritage architecture, lively festivals, and mango-sweet island beaches nearby.</p>
+          </div>
+        </article>
+
+        <article class="dest-card" data-id="davao">
+          <img class="dest-thumb" src="images/davao.jpg" alt="Davao">
+          <div class="dest-body">
+            <h3 class="dest-title">Davao — Nature & Mount Apo</h3>
+            <p class="dest-desc">Gateway to Mount Apo, lush parks, and a vibrant durian-loving city culture.</p>
+          </div>
+        </article>
+
+        <article class="dest-card" data-id="tagaytay">
+          <img class="dest-thumb" src="images/tagaytay.jpg" alt="Tagaytay">
+          <div class="dest-body">
+            <h3 class="dest-title">Tagaytay — Taal Views</h3>
+            <p class="dest-desc">Cool breezes and postcard views of Taal Lake and Volcano — perfect for day trips from Manila.</p>
+          </div>
+        </article>
+
+        <article class="dest-card" data-id="zambales">
+          <img class="dest-thumb" src="images/zambales.jpg" alt="Zambales">
+          <div class="dest-body">
+            <h3 class="dest-title">Zambales — Surf & Beach Camping</h3>
+            <p class="dest-desc">Sandy coves, surf breaks, and popular camping spots like Nagsasa and Anawangin.</p>
+          </div>
+        </article>
+
+        <article class="dest-card" data-id="camiguin">
+          <img class="dest-thumb" src="images/camiguin.jpg" alt="Camiguin">
+          <div class="dest-body">
+            <h3 class="dest-title">Camiguin — Island of Fire</h3>
+            <p class="dest-desc">Small island packed with waterfalls, hot springs, and volcanic landscapes.</p>
+          </div>
+        </article>
+
+        <article class="dest-card" data-id="aporeef">
+          <img class="dest-thumb" src="images/aporeef.jpg" alt="Apo Reef">
+          <div class="dest-body">
+            <h3 class="dest-title">Apo Reef — Diving Paradise</h3>
+            <p class="dest-desc">One of the largest coral reef systems in the world — excellent diving and marine biodiversity.</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">© 2025 ExplorePH</div>
+  </footer>
+
+  <!-- Destination modal (hidden by default). Includes thumbnail strip and arrows -->
+  <div id="destModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-overlay" data-close="true"></div>
+    <div class="modal-panel" role="document">
+      <button class="modal-close" aria-label="Close">
+        <svg class="icon" width="18" height="18" aria-hidden="true">
+          <use href="icons.svg#icon-close"></use>
+        </svg>
+      </button>
+      <div class="modal-grid">
+        <div class="modal-image-wrap">
+          <button id="modalPrev" class="modal-arrow prev" aria-label="Previous image">
+            <svg class="icon" width="18" height="18" aria-hidden="true">
+              <use href="icons.svg#icon-prev"></use>
+            </svg>
+          </button>
+          <img id="modalImage" class="modal-image" src="" alt="">
+          <button id="modalNext" class="modal-arrow next" aria-label="Next image">
+            <svg class="icon" width="18" height="18" aria-hidden="true">
+              <use href="icons.svg#icon-next"></use>
+            </svg>
+          </button>
+          <div id="modalThumbs" class="modal-thumbs" aria-hidden="false"></div>
+        </div>
+
+        <div class="modal-content">
+          <h2 id="modalTitle">Title</h2>
+          <div id="modalTag" class="tag" aria-hidden="true"></div>
+
+          <h3>About</h3>
+          <p id="modalAbout"></p>
+
+          <h3>Culture</h3>
+          <p id="modalCulture"></p>
+
+          <h3>Cautions & Tips</h3>
+          <ul id="modalTips"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="scripts.js"></script>
+</body>
+</html>

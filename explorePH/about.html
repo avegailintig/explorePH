@@ -1,0 +1,215 @@
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ExplorePH — About Us</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- Inline helper styles in case style.css doesn't contain team rules yet -->
+  <style>
+    .team-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin-top:12px; }
+    .team-card { padding:12px; border-radius:8px; background:var(--card-bg,#fff); box-shadow:var(--card-shadow,0 1px 3px rgba(0,0,0,0.06)); }
+    .team-card picture,
+    .team-card img { display:block; width:100%; height:160px; object-fit:cover; border-radius:6px; }
+    .team-card h3 { margin:10px 0 4px; }
+    .team-card .role { font-size:0.9rem; color:var(--muted); }
+    .contact-info a { color:inherit; text-decoration:underline; }
+    .lead { margin-bottom:8px; color:var(--muted); }
+    .form-card input, .form-card textarea { width:100%; box-sizing:border-box; }
+  </style>
+</head>
+<body>
+  <div style="display:none" aria-hidden="true">
+    <object type="image/svg+xml" data="icons.svg"></object>
+  </div>
+
+  <header class="site-nav">
+    <div class="nav-inner container">
+      <a class="brand" href="index.html">
+        <img class="logo-img" src="images/logo.png"
+             srcset="images/logo@2x.png 2x" width="44" height="44" alt="ExplorePH logo">
+        <div>
+          <div style="font-size:0.95rem">ExplorePH</div>
+          <div style="font-size:0.75rem;color:var(--muted)">Discover the Beauty of the Philippines</div>
+        </div>
+      </a>
+
+      <nav>
+        <button id="navToggle" class="nav-toggle" aria-label="Toggle menu">
+          <svg class="icon" width="20" height="20" aria-hidden="true">
+            <use href="icons.svg#icon-menu"></use>
+          </svg>
+        </button>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="destinations.html">Destinations</a>
+          <a href="culture.html">Culture & Tips</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="about.html" aria-current="page">About Us</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section>
+      <h1>About Us</h1>
+      <p class="lead">
+        ExplorePH is a small, community-first travel collective made up of passionate local guides, storytellers,
+        and photographers. We organize responsible and authentic experiences that connect visitors with the people,
+        places, and traditions of the Philippines.
+      </p>
+
+      <article style="margin-top:18px">
+        <h2>Our Mission</h2>
+        <p>
+          To create meaningful travel experiences that support local communities, preserve culture, and celebrate
+          the natural beauty of the Philippines. We design tours and itineraries that are sustainable, immersive,
+          and respectful of the places we visit.
+        </p>
+      </article>
+
+      <article style="margin-top:18px">
+        <h2>What We Do</h2>
+        <ul>
+          <li>Guided day tours and multi-day itineraries tailored to small groups.</li>
+          <li>Itinerary planning and logistics for independent travelers.</li>
+          <li>Photography support and guided photo-walks.</li>
+          <li>Community-led cultural experiences and workshops.</li>
+        </ul>
+      </article>
+
+      <article style="margin-top:18px">
+        <h2>Meet the Team</h2>
+
+        <!--
+          To connect your images:
+          1. Put the following files in your project's images/ folder (same level as this about.html):
+             - images/eunice-buntag.jpg         (required)
+             - images/marco-reyes.jpg          (required)
+             - images/aisha-cruz.jpg           (required)
+             - images/daniel-santos.jpg        (required)
+             Optional high-resolution and webp variants (recommended for quality and performance):
+             - images/eunice-buntag@2x.jpg
+             - images/eunice-buntag.webp
+             - images/marco-reyes@2x.jpg
+             - images/marco-reyes.webp
+             - images/aisha-cruz@2x.jpg
+             - images/aisha-cruz.webp
+             - images/daniel-santos@2x.jpg
+             - images/daniel-santos.webp
+          2. If your filenames differ, rename them to match the files above or update the src/srcset paths below to match your filenames.
+        -->
+
+        <div class="team-grid">
+          <div class="team-card">
+            <picture>
+              <source srcset="images/eunice.jpg" type="image/jpg">
+              <img src="images/eunice.jpg"
+                   srcset="images/eunice.jpg 1x, images/eunice@2x.jpg 2x"
+                   alt="Eunice Buntag — Co-founder & Lead Tour Guide"
+                   width="400" height="240" loading="lazy" decoding="async">
+            </picture>
+            <h3>Eunice Buntag</h3>
+            <div class="role">Co-founder & Lead Tour Guide</div>
+            <p style="margin-top:8px">Licensed tour guide with a background in sustainable tourism. Eunice designs immersive cultural routes and leads personalized tours across Luzon.</p>
+          </div>
+
+          <div class="team-card">
+            <picture>
+              <source srcset="images/jessa.jpg" type="image/jpg">
+              <img src="images/jessa.jpg"
+                   srcset="images/marco-reyes.jpg 1x, images/marco-reyes@2x.jpg 2x"
+                   alt="Jessa Pagutlan — Operations & Logistics"
+                   width="400" height="240" loading="lazy" decoding="async">
+            </picture>
+            <h3>Jessa Pagutlan</h3>
+            <div class="role">Operations & Logistics</div>
+            <p style="margin-top:8px">Handles bookings, permits, and partner coordination to make sure each trip runs smoothly and safely.</p>
+          </div>
+
+          <div class="team-card">
+            <picture>
+              <source srcset="images/khira.jpg" type="image/jpg">
+              <img src="images/khira.jpg"
+                   srcset="images/khira.jpg 1x, images/khira@2x.jpg 2x"
+                   alt="Khira Diane Orcullo — Community & Partnerships"
+                   width="400" height="240" loading="lazy" decoding="async">
+            </picture>
+            <h3>Khira Diane Orcullo</h3>
+            <div class="role">Community & Partnerships</div>
+            <p style="margin-top:8px">Works with local communities to create authentic experiences and ensure benefits are shared locally.</p>
+          </div>
+
+          <div class="team-card">
+            <picture>
+              <source srcset="images/avegail.jpg" type="image/jpg">
+              <img src="images/avegail.jpg"
+                   srcset="images/avegail.jpg 1x, images/avegail@2x.jpg 2x"
+                   alt="Avegail Intig — Media & Photography"
+                   width="400" height="240" loading="lazy" decoding="async">
+            </picture>
+            <h3>Avegail Intig</h3>
+            <div class="role">Media & Photography</div>
+            <p style="margin-top:8px">Photographer and visual storyteller — documents journeys and curates the ExplorePH gallery.</p>
+          </div>
+        </div>
+      </article>
+
+      <article style="margin-top:18px">
+        <h2>Contact & Booking</h2>
+        <p>We're a team of four dedicated local guides and travel professionals — happy to answer questions or help plan your trip.</p>
+
+        <div class="contact-info" style="display:flex;flex-wrap:wrap;gap:16px;margin-top:12px">
+          <div style="min-width:220px">
+            <strong>Email</strong>
+            <div><a href="mailto:hello@exploreph.com">hello@exploreph.com</a></div>
+          </div>
+          <div style="min-width:220px">
+            <strong>Phone</strong>
+            <div><a href="tel:+639123456789">+63 912 345 6789</a></div>
+          </div>
+          <div style="min-width:220px">
+            <strong>Office</strong>
+            <div>Manila, Philippines</div>
+          </div>
+          <div style="min-width:220px">
+            <strong>Social</strong>
+            <div>
+              <a href="https://instagram.com/exploreph" target="_blank" rel="noopener">Instagram</a> ·
+              <a href="https://facebook.com/exploreph" target="_blank" rel="noopener">Facebook</a>
+            </div>
+          </div>
+        </div>
+
+        <p style="margin-top:12px;font-size:0.95rem;color:var(--muted)">
+          For bookings or press inquiries, please email us with your preferred dates and interests. We typically respond within 48 hours.
+        </p>
+
+        <div style="margin-top:16px">
+          <form id="contactForm" class="form-card" aria-label="Contact form">
+            <label for="name">Full name</label>
+            <input id="name" name="name" type="text" required placeholder="Your full name">
+
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required placeholder="name@example.com">
+
+            <label for="message">Message (include preferred dates / questions)</label>
+            <textarea id="message" name="message" rows="6" placeholder="Tell us about your trip..."></textarea>
+
+            <button class="btn" type="submit">Send Message</button>
+          </form>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">© 2025 ExplorePH — All rights reserved</div>
+  </footer>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
